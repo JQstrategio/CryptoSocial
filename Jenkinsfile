@@ -14,7 +14,6 @@ pipeline {
                     //clone repo
                     sh 'git clone https://github.com/JQstrategio/CryptoSocial'
 
-
                     //package python application and copy to remote server
 
                 }
