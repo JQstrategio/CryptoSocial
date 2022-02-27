@@ -1,11 +1,7 @@
 //
 // SECTION FOR EC2
 //
-module "crypto_ec2" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
-  version = ">= 3.0"
-
-  name                        = "${var.namespace}-ec2-public"
+resource "aws_instance" "crypto_ec2" {
   associate_public_ip_address = true
 
   ami                    = var.ec2_ami
@@ -14,16 +10,25 @@ module "crypto_ec2" {
   subnet_id              = var.ec2_subnet_id
   vpc_security_group_ids = [var.sg_pub_id]
   iam_instance_profile   = var.ec2_profile_name
+
+  tags = {
+    Name = "${var.namespace}-ec2-public"
+  }
+
+  connection {
+    type = "ssh"
+    user = "root"
+    private_key = "${file("${var.private_key_path}")}"
+  }
+  
+  provisioner "file" {
+    source = "C:/Users/Johnny/AppData/Local/Jenkins/.jenkins/workspace/crypto/CryptoApp.zip"
+    destination = "./"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Hello World'"
+    ]
+  }
 }
-
-//
-// SECTION FOR IF EIP IS NEEDED
-//
-# resource "aws_eip" "crypto_ec2_eip" {
-#   instance = module.crypto_ec2.id
-#   vpc = true
-
-#   tags = {
-#     Name = "${var.namespace}-eip"
-#   }
-# }

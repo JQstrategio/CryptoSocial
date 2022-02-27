@@ -44,8 +44,8 @@ resource "aws_route_table_association" "add_public" {
 # }
 
 resource "aws_security_group" "allow_ssh" {
-  name        = "crypto-allow_ssh"
-  description = "Allow SSH inbound traffic"
+  name        = "${var.namespace}-sg"
+  description = "Allow SSH and port 8000 inbound traffic"
   vpc_id      = aws_vpc.crypto_vpc.id
 
   ingress {
@@ -58,9 +58,9 @@ resource "aws_security_group" "allow_ssh" {
 
   ingress {
     description = "HTTP Connect with port 8000"
-    from_port = 8000
-    to_port = 8000
-    protocol = "tcp"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -69,9 +69,5 @@ resource "aws_security_group" "allow_ssh" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.namespace}-sg"
   }
 }
