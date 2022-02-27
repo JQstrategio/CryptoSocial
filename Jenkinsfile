@@ -20,7 +20,7 @@ pipeline {
             }
             stage('Test') {
                 steps {
-                    sh 'python3 -m pytest CryptoSocial/tests/test_p1.py --verbose'
+                    sh 'python3 -m pytest CryptoSocial/app/tests/test_p1.py --verbose'
 
                     // sh 'python3 manage.py runserver'
                     // sh 'python3 -m selenium CryptoSocial/tests/selenium_test.py'
