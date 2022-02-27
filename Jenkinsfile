@@ -28,7 +28,7 @@ pipeline {
             }
             stage('terraform') {
                 steps {
-                    sh 'teraform init ./CryptoSocial/terraform-project'
+                    sh 'terraform init ./CryptoSocial/terraform-project'
                     sh 'terraform apply ./CryptoSocial/terraform-project -auto-approve -no-color'
                 }
             }
