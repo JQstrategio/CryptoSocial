@@ -21,7 +21,14 @@ pipeline {
             stage('Test') {
                 steps {
                     sh 'python3 -m pytest CryptoSocial/tests/test_p1.py --verbose'
+
+                    // sh 'python3 manage.py runserver'
+                    // sh 'python3 -m selenium CryptoSocial/tests/selenium_test.py'
                 }
+            }
+            stage('terraform') {
+                sh './CryptoSocial/terraform-project init'
+                sh './CryptoSocial/terraform-project terraform apply -auto-approve -no-color'
             }
         }
     }
