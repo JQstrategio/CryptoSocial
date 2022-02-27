@@ -28,8 +28,8 @@ pipeline {
             }
             stage('terraform') {
                 steps {
-                    sh 'terraform -chdir=~/CryptoSocial/terraform-project init'
-                    sh 'terraform -chdir=~/CryptoSocial/terraform-project apply -auto-approve -no-color'
+                    sh 'terraform -chdir=Users/Johnny/CryptoSocial/terraform-project init'
+                    sh 'terraform -chdir=Users/Johnny/CryptoSocial/terraform-project apply -auto-approve -no-color'
                 }
             }
         }
