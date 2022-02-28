@@ -63,7 +63,9 @@ resource "null_resource" "config" {
     inline = [
       "cd CryptoSocial/app",
       "sudo pip install -r requirements.txt",
-      "sed -i \"s/127.0.0.1/${aws_instance.crypto_ec2.public_ip}/g\" crypto/settings.py"
+      "sed -i \"s/127.0.0.1/${aws_instance.crypto_ec2.public_ip}/g\" crypto/settings.py",
+      "nohup python3 manage.py runserver 0:8000 &",
+      "echo 'DONE!'"
     ]
   }
 }
