@@ -33,7 +33,6 @@ resource "null_resource" "config" {
   provisioner "file" {
     source      = "C:/Users/Johnny/AppData/Local/Jenkins/.jenkins/workspace/crypto/CryptoApp.zip"
     destination = "CryptoApp.zip"
-    on_failure  = continue
   }
 
   //
@@ -45,7 +44,6 @@ resource "null_resource" "config" {
       "sudo apt upgrade -y",
       "sudo apt install python pip unzip -y"
     ]
-    on_failure = continue
   }
 
   //
@@ -63,9 +61,9 @@ resource "null_resource" "config" {
   //
   provisioner "remote-exec" {
     inline = [
-      "cd CryptoSocial/App",
-      "sudo pip install requirements.txt",
-      "python3 manage.py runserver"
+      "cd CryptoSocial/app",
+      "sudo pip install -r requirements.txt",
+      "sed -i \"s/127.0.0.1/${aws_instance.crypto_ec2.public_ip}/g\" crypto/settings.py"
     ]
   }
 }
