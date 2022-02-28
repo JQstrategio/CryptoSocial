@@ -37,6 +37,6 @@ variable "ec2_type" {
 
 variable "private_key_path" {
   description = "path to private key for ec2"
-  type = string
-  default = "C:/Users/Johnny/CryptoSocial/terraform-project/Crypto-key.pem"
+  type        = string
+  default     = "C:/Users/Johnny/CryptoSocial/terraform-project/Crypto-key.pem"
 }
