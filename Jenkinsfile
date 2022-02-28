@@ -15,7 +15,7 @@ pipeline {
                     sh 'git clone https://github.com/JQstrategio/CryptoSocial'
 
                     //package python application
-                    sh 'compress-archive CryptoSocial/app CryptoApp.zip'
+                    sh 'zip a CryptoApp.zip CryptoSocial/app'
                 }
             }
             stage('Test') {
