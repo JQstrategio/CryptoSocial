@@ -35,38 +35,48 @@ resource "null_resource" "config" {
     destination = "CryptoApp.zip"
   }
 
-  //
-  // Config
-  //
+
   provisioner "remote-exec" {
     inline = [
+      //
+      // Config environment
+      //
       "sudo apt update -y",
       "sudo apt upgrade -y",
-      "sudo apt install python pip unzip -y"
-    ]
-  }
+      "sudo apt install python pip unzip s3fs awscli -y",
 
-  //
-  // Unpack
-  //
-  provisioner "remote-exec" {
-    inline = [
+      //
+      // Unpack
+      //
       "unzip -o CryptoApp.zip",
-      "rm CryptoApp.zip"
-    ]
-  }
+      "rm CryptoApp.zip",
 
-  //
-  // Final config
-  //
-  provisioner "remote-exec" {
-    inline = [
+      //
+      // Config for application
+      //
       "cd CryptoSocial/app",
       "sudo pip install -r requirements.txt",
       "sed -i \"s/localhost/${aws_instance.crypto_ec2.public_ip}/g\" crypto/settings.py",
+
+      //
+      // Mounting s3 bucket to points
+      //
+      "mkdir bucket",
+      "sudo s3fs crypto-s3-bucket ./bucket -o iam_role=\"Crypto-role\" -o allow_other -o default_acl=public-read -o use_cache=/tmp/s3fs -o nonempty",
+      "mkdir ../static_cdn",
+      "sudo s3fs crypto-s3-bucket ../static_cdn -o iam_role=\"Crypto-role\" -o allow_other -o default_acl=public-read -o use_cache=/tmp/s3fs -o nonempty",
+      
+      //
+      // Prepare server
+      //
       "python3 manage.py migrate",
+      "echo 'PREPARING TO RUN SERVER'",
+
+      //
+      // Running server
+      //
       "nohup python3 manage.py runserver 0:8000 &",
-      "echo 'DONE!'"
+      "echo 'RUNNING!'"
     ]
   }
 }
