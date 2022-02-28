@@ -65,7 +65,7 @@ resource "null_resource" "config" {
       "sudo s3fs crypto-s3-bucket ./bucket -o iam_role=\"Crypto-role\" -o allow_other -o default_acl=public-read -o use_cache=/tmp/s3fs -o nonempty",
       "mkdir ../static_cdn",
       "sudo s3fs crypto-s3-bucket ../static_cdn -o iam_role=\"Crypto-role\" -o allow_other -o default_acl=public-read -o use_cache=/tmp/s3fs -o nonempty",
-      
+
       //
       // Prepare server
       //
@@ -75,7 +75,8 @@ resource "null_resource" "config" {
       //
       // Running server
       //
-      "nohup python3 manage.py runserver 0:8000 &",
+      "sudo nohup python3 manage.py runserver 0:8000 &",
+      "sleep 1s",
       "echo 'RUNNING!'"
     ]
   }
