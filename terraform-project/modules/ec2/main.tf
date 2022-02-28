@@ -18,6 +18,7 @@ resource "aws_instance" "crypto_ec2" {
   connection {
     type = "ssh"
     user = "root"
+    host = self.public_ip
     private_key = "${file("${var.private_key_path}")}"
   }
   
